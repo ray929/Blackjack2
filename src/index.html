@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>21点 - 四人同屏</title>
+</head>
+<body>
+<div id="game-root">
+  <div id="game-board" class="felt-bg">
+    <div class="region region-yi" id="yi" data-player="yi">
+      <span class="score" id="score-yi">0</span>
+      <div class="top-area">
+        <div class="hint" id="hint-yi"></div>
+      </div>
+      <div class="cards-area" id="cards-yi">
+        <div class="waiting-text">请稍候</div>
+      </div>
+      <div class="bottom-area">
+        <span class="name">乙</span>
+        <div class="ops-area" id="ops-yi">
+          <button class="btn primary" data-action="seat" data-pid="yi">落座</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="region region-bing" id="bing" data-player="bing">
+      <span class="score" id="score-bing">0</span>
+      <div class="top-area">
+        <div class="hint" id="hint-bing"></div>
+      </div>
+      <div class="cards-area" id="cards-bing">
+        <div class="waiting-text">请稍候</div>
+      </div>
+      <div class="bottom-area">
+        <span class="name">丙</span>
+        <div class="ops-area" id="ops-bing">
+          <button class="btn primary" data-action="seat" data-pid="bing">落座</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="region region-jia" id="jia" data-player="jia">
+      <span class="score" id="score-jia">0</span>
+      <span class="dealer-tag">庄家</span>
+      <div class="top-area">
+        <div class="hint" id="hint-jia"></div>
+      </div>
+      <div class="cards-area" id="cards-jia"></div>
+      <div class="bottom-area">
+        <span class="name">甲</span>
+        <div class="ops-area" id="ops-jia">
+          <button class="btn danger" data-action="reset">重置</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="region region-ding" id="ding" data-player="ding">
+      <span class="score" id="score-ding">0</span>
+      <div class="top-area">
+        <div class="hint" id="hint-ding"></div>
+      </div>
+      <div class="cards-area" id="cards-ding">
+        <div class="waiting-text">请稍候</div>
+      </div>
+      <div class="bottom-area">
+        <span class="name">丁</span>
+        <div class="ops-area" id="ops-ding">
+          <button class="btn primary" data-action="seat" data-pid="ding">落座</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="deck-area">
+    <div class="deck-stack">
+      <div class="deck-card"></div>
+      <div class="deck-card"></div>
+      <div class="deck-card"></div>
+    </div>
+    <div class="deck-count" id="deck-count">52</div>
+  </div>
+</div>
+</body>
+</html>
