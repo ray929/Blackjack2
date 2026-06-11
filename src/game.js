@@ -1,5 +1,5 @@
 import { loadScores, saveScores, clearScores } from './storage.js';
-import { playTakeCard, playOver } from './audio.js';
+import { playTakeCard, playOver, playBang } from './audio.js';
 
 const SUITS = ['spade', 'heart', 'diamond', 'club'];
 const RANKS = ['a','2','3','4','5','6','7','8','9','10','j','q','k'];
@@ -127,8 +127,13 @@ export function renderPlayer(pid) {
   scoreEl.textContent = p.score;
 
   if (!p.seated) {
-    cardsArea.innerHTML = '<div class="waiting-text">请稍候</div>';
-    ops.innerHTML = `<button class="btn primary" data-action="seat" data-pid="${pid}">落座</button>`;
+    if (gameState === 'idle') {
+      cardsArea.innerHTML = '';
+      ops.innerHTML = `<button class="btn primary" data-action="seat" data-pid="${pid}">落座</button>`;
+    } else {
+      cardsArea.innerHTML = '<div class="waiting-text">请稍候</div>';
+      ops.innerHTML = `<button class="btn primary" disabled data-action="seat" data-pid="${pid}">落座</button>`;
+    }
     return;
   }
 
@@ -248,6 +253,10 @@ function startPlayerTurn() {
   advancePlayerTurn();
 }
 
+function allPlayersBusted() {
+  return playerOrder.every(pid => pid === 'jia' || !players[pid].seated || players[pid].busted);
+}
+
 function advancePlayerTurn() {
   while (currentPlayerIndex < playerOrder.length) {
     const pid = playerOrder[currentPlayerIndex];
@@ -255,6 +264,11 @@ function advancePlayerTurn() {
     if (p.busted || p.stood || p.blackjack || p.fiveCardWin) { currentPlayerIndex++; continue; }
     const ops = document.getElementById('ops-' + pid);
     ops.innerHTML = `<button class="btn primary" data-action="hit" data-pid="${pid}">要牌</button><button class="btn secondary" data-action="stand" data-pid="${pid}">停牌</button>`;
+    return;
+  }
+  if (allPlayersBusted()) {
+    setHint('jia', '庄家胜利!', 'win');
+    setTimeout(() => settle(), 500);
     return;
   }
   setTimeout(() => startDealerTurn(), 500);
@@ -278,6 +292,7 @@ export function hit(pid) {
     if (val > 21) {
       p.busted = true;
       setHint(pid, '爆牌!', 'bust');
+      playBang();
       document.getElementById('ops-' + pid).innerHTML = '';
       if (gameState === 'playerTurn') {
         currentPlayerIndex++;
@@ -318,20 +333,37 @@ export function stand(pid) {
   }
 }
 
+function dealerWinsAll() {
+  const dealer = players.jia;
+  const dealerVal = handValue(dealer.cards);
+  if (dealerVal > 21) return false;
+  for (const pid of playerOrder) {
+    if (pid === 'jia') continue;
+    const p = players[pid];
+    if (!p.seated || p.busted || p.fiveCardWin) continue;
+    const val = handValue(p.cards);
+    if (p.blackjack && !dealer.blackjack) return false;
+    if (dealer.blackjack && !p.blackjack) continue;
+    if (val >= dealerVal) return false;
+  }
+  return true;
+}
+
 function startDealerTurn() {
   gameState = 'dealerTurn';
   const dealer = players.jia;
   if (dealer.cards.length >= 2 && dealer.cards[1].faceDown) {
-    const cardEl = document.getElementById('card-jia-1');
-    if (cardEl) {
-      cardEl.classList.remove('face-down');
-      dealer.cards[1].faceDown = false;
-    }
+    dealer.cards[1].faceDown = false;
+    renderPlayer('jia');
   }
   if (dealer.blackjack) {
     setHint('jia', 'Blackjack!', 'blackjack');
   }
-  // 庄家手动控制
+  if (dealerWinsAll()) {
+    setHint('jia', '庄家胜利!', 'win');
+    setTimeout(() => settle(), 500);
+    return;
+  }
   const ops = document.getElementById('ops-jia');
   ops.innerHTML = `<button class="btn primary" data-action="hit" data-pid="jia">要牌</button><button class="btn secondary" data-action="stand" data-pid="jia">停牌</button>`;
 }

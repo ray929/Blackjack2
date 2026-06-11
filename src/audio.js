@@ -1,9 +1,11 @@
 import takeCardUrl from './assets/sounds/take_card.mp3';
 import overUrl from './assets/sounds/over.mp3';
+import bangUrl from './assets/sounds/bang.mp3';
 
 const audioCtx = {
   takeCard: new Audio(takeCardUrl),
   over: new Audio(overUrl),
+  bang: new Audio(bangUrl),
 };
 
 // 预加载，避免第一次播放延迟
@@ -21,5 +23,11 @@ export function playTakeCard() {
 export function playOver() {
   const a = audioCtx.over.cloneNode();
   a.volume = 0.8;
+  a.play().catch(() => {});
+}
+
+export function playBang() {
+  const a = audioCtx.bang.cloneNode();
+  a.volume = 0.9;
   a.play().catch(() => {});
 }
