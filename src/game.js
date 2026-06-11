@@ -88,12 +88,14 @@ function clearHints() {
 }
 
 export function seat(pid) {
+  if (gameState !== 'idle') return;
   players[pid].seated = true;
   renderPlayer(pid);
   checkDealButton();
 }
 
 export function leave(pid) {
+  if (gameState !== 'idle') return;
   players[pid].seated = false;
   players[pid].cards = [];
   renderPlayer(pid);
@@ -141,11 +143,11 @@ export function renderPlayer(pid) {
     cardsArea.innerHTML = '';
   } else {
     cardsArea.innerHTML = p.cards.map((c, i) => {
+      if (c.faceDown) {
+        return `<div class="card face-down" id="card-${pid}-${i}"></div>`;
+      }
       const bgUrl = getCardBgUrl(c.suit, c.rank);
-      return `<div class="card ${c.faceDown ? 'face-down' : ''}" id="card-${pid}-${i}">
-        <div class="face" style="background-image:url('${bgUrl}')"></div>
-        <div class="back-face"></div>
-      </div>`;
+      return `<div class="card" id="card-${pid}-${i}" style="background-image:url('${bgUrl}')"></div>`;
     }).join('');
   }
 
@@ -395,6 +397,7 @@ function settle() {
     if (bust) {
       setHint(pid, '输 -10', 'lose');
       p.score -= 10;
+      players.jia.score += 10;
     } else if (p.fiveCardWin) {
       setHint(pid, '五子不犯廿! +50', 'win');
       p.score += 50;
