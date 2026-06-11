@@ -279,3 +279,43 @@ html, body {
     transform: translate(-50%, -50%) rotate(90deg);
   }
 }
+
+/* 确认对话框 */
+.confirm-overlay {
+  position: fixed;
+  z-index: 200;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.confirm-overlay.hidden {
+  display: none;
+}
+.confirm-dialog {
+  background: #0f5c28;
+  border: 2px solid #072e14;
+  border-radius: 14px;
+  padding: 28px 36px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  max-width: 320px;
+}
+.confirm-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+.confirm-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+.confirm-buttons .btn {
+  min-width: 90px;
+  padding: 10px 24px;
+  font-size: 16px;
+}

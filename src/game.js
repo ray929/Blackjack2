@@ -108,9 +108,9 @@ function checkDealButton() {
     return;
   }
   if (hasSeated) {
-    ops.innerHTML = `<button class="btn primary" data-action="deal">发牌</button><button class="btn danger" data-action="reset">重置</button>`;
+    ops.innerHTML = `<button class="btn primary" data-action="deal">发牌</button><button class="btn danger" data-action="show-confirm">重置</button>`;
   } else {
-    ops.innerHTML = `<button class="btn danger" data-action="reset">重置</button>`;
+    ops.innerHTML = `<button class="btn danger" data-action="show-confirm">重置</button>`;
   }
 }
 
@@ -467,10 +467,19 @@ document.addEventListener('click', (e) => {
   if (action === 'seat' && pid) seat(pid);
   if (action === 'leave' && pid) leave(pid);
   if (action === 'deal') deal();
-  if (action === 'reset') resetGame();
+  if (action === 'show-confirm') showConfirmDialog();
+  if (action === 'confirm-reset') { hideConfirmDialog(); resetGame(); }
+  if (action === 'cancel-reset') hideConfirmDialog();
   if (action === 'hit' && pid) hit(pid);
   if (action === 'stand' && pid) stand(pid);
 });
+
+function showConfirmDialog() {
+  document.getElementById('confirm-overlay').classList.remove('hidden');
+}
+function hideConfirmDialog() {
+  document.getElementById('confirm-overlay').classList.add('hidden');
+}
 
 // 初始化
 initDeck();
