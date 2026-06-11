@@ -268,6 +268,11 @@ function advancePlayerTurn() {
   }
   if (allPlayersBusted()) {
     setHint('jia', '庄家胜利!', 'win');
+    const dealer = players.jia;
+    if (dealer.cards.length >= 2 && dealer.cards[1].faceDown) {
+      dealer.cards[1].faceDown = false;
+      renderPlayer('jia');
+    }
     setTimeout(() => settle(), 500);
     return;
   }
