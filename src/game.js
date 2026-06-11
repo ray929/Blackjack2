@@ -28,10 +28,14 @@ function persistScores() {
 
 function initDeck() {
   deck = [];
-  for (const s of SUITS) {
-    for (const r of RANKS) {
-      deck.push({ suit: s, rank: r });
+  for (let d = 0; d < 4; d++) {
+    for (const s of SUITS) {
+      for (const r of RANKS) {
+        deck.push({ suit: s, rank: r });
+      }
     }
+    deck.push({ suit: 'joker', rank: 'red' });
+    deck.push({ suit: 'joker', rank: 'black' });
   }
   for (let i = deck.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -46,7 +50,7 @@ function updateDeckCount() {
 
 function cardValue(rank) {
   if (rank === 'a') return 11;
-  if (['j','q','k'].includes(rank)) return 10;
+  if (['j','q','k','red','black'].includes(rank)) return 10;
   return parseInt(rank);
 }
 
@@ -189,7 +193,7 @@ export function deal() {
   if (gameState !== 'idle') return;
   gameState = 'dealing';
   checkDealButton();
-  initDeck();
+  if (deck.length < 25) initDeck();
   clearHints();
 
   for (const pid in players) {
