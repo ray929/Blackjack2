@@ -409,10 +409,7 @@ export function resetGame() {
     players[pid].stood = false;
     players[pid].blackjack = false;
     players[pid].fiveCardWin = false;
-    if (!players[pid].isDealer) {
-      players[pid].seated = false;
-      players[pid].score = 0;
-    }
+    players[pid].score = 0;
   }
   clearScores();
   clearHints();
