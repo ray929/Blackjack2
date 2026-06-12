@@ -12,6 +12,7 @@
 - 发牌飞入动画与暗牌翻转动画
 - 音效反馈（发牌、结算）
 - 响应式布局，支持横竖屏切换
+- 自定义 favicon
 
 ## Environment Variables
 
