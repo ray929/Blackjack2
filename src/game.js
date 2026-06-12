@@ -1,5 +1,9 @@
 import { loadScores, saveScores, clearScores } from './storage.js';
-import { playTakeCard, playOver, playBang } from './audio.js';
+import {
+  playTakeCard, playOver,
+  playPlayerHit, playPlayerStand, playPlayerBust, playPlayerJoin, playPlayerLeave,
+  playDealerHit, playDealerStand, playDealerBust
+} from './audio.js';
 
 const SUITS = ['spade', 'heart', 'diamond', 'club'];
 const RANKS = ['a','2','3','4','5','6','7','8','9','10','j','q','k'];
@@ -90,6 +94,7 @@ function clearHints() {
 export function seat(pid) {
   if (gameState !== 'idle') return;
   players[pid].seated = true;
+  playPlayerJoin();
   renderPlayer(pid);
   checkDealButton();
 }
@@ -98,6 +103,7 @@ export function leave(pid) {
   if (gameState !== 'idle') return;
   players[pid].seated = false;
   players[pid].cards = [];
+  playPlayerLeave();
   renderPlayer(pid);
   checkDealButton();
 }
@@ -310,6 +316,11 @@ export function hit(pid) {
   const from = getDeckCenter();
   const to = getCardTarget(pid);
   playTakeCard();
+  if (pid === 'jia') {
+    playDealerHit();
+  } else {
+    playPlayerHit();
+  }
   flyCard(from, to, () => {
     renderPlayer(pid);
     const p = players[pid];
@@ -317,7 +328,11 @@ export function hit(pid) {
     if (val > 21) {
       p.busted = true;
       setHint(pid, '爆牌!', 'bust');
-      playBang();
+      if (pid === 'jia') {
+        playDealerBust();
+      } else {
+        playPlayerBust();
+      }
       document.getElementById('ops-' + pid).innerHTML = '';
       if (gameState === 'playerTurn') {
         currentPlayerIndex++;
@@ -349,6 +364,11 @@ export function hit(pid) {
 export function stand(pid) {
   if (gameState !== 'playerTurn' && gameState !== 'dealerTurn') return;
   players[pid].stood = true;
+  if (pid === 'jia') {
+    playDealerStand();
+  } else {
+    playPlayerStand();
+  }
   document.getElementById('ops-' + pid).innerHTML = '';
   if (gameState === 'playerTurn') {
     currentPlayerIndex++;
