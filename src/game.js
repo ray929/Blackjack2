@@ -199,15 +199,13 @@ function renderAll() {
 function getDeckCenter() {
   const deckArea = document.getElementById('deck-area');
   const rect = deckArea.getBoundingClientRect();
-  return { x: rect.left + rect.width/2 - 28, y: rect.top + rect.height/2 - 42 };
+  return { x: rect.left + rect.width/2, y: rect.top + rect.height/2 };
 }
 
 function getCardTarget(pid) {
   const cardsArea = document.getElementById('cards-' + pid);
   const rect = cardsArea.getBoundingClientRect();
-  const count = players[pid].cards.length;
-  const offsetX = (count - 1) * 30;
-  return { x: rect.left + rect.width/2 - 28 + offsetX - (count-1)*15, y: rect.top + rect.height/2 - 42 };
+  return { x: rect.left + rect.width/2, y: rect.top + rect.height/2 };
 }
 
 function flyCard(from, to, onDone) {
@@ -215,11 +213,15 @@ function flyCard(from, to, onDone) {
   card.className = 'flying-card back';
   card.style.left = from.x + 'px';
   card.style.top = from.y + 'px';
+  card.style.transform = 'translate(-50%, -50%)';
   document.body.appendChild(card);
 
+  // 强制重排确保初始位置生效后再启动 transition
   requestAnimationFrame(() => {
-    card.style.left = to.x + 'px';
-    card.style.top = to.y + 'px';
+    requestAnimationFrame(() => {
+      card.style.left = to.x + 'px';
+      card.style.top = to.y + 'px';
+    });
   });
 
   setTimeout(() => {

@@ -103,7 +103,7 @@ html, body {
   gap: clamp(3px, 1vmin, 8px);
   align-items: center;
   justify-content: center;
-  padding: 0 clamp(6px, 1.5vmin, 14px);
+  padding: clamp(18px, 3.5vmin, 26px) clamp(6px, 1.5vmin, 14px) 0;
   flex-shrink: 0;
   overflow: hidden;
   position: relative;
@@ -139,7 +139,7 @@ html, body {
 
 .hand-value {
   position: absolute;
-  top: clamp(1px, 0.5vmin, 4px);
+  top: clamp(2px, 0.5vmin, 6px);
   left: 50%;
   transform: translateX(-50%);
   font-size: clamp(12px, 2.2vmin, 18px);
@@ -152,6 +152,13 @@ html, body {
 }
 .hand-value.show {
   display: block;
+}
+
+/* 旋转区域（乙、丙）的 hand-value 改用 bottom 定位，避免旋转后跑到下方 */
+#yi .hand-value,
+#bing .hand-value {
+  top: auto;
+  bottom: clamp(2px, 0.5vmin, 6px);
 }
 
 /* 底部 30%：名字 + 操作区域 */
@@ -211,7 +218,7 @@ html, body {
   box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3);
 }
 .btn:active {
-  transform: translateY(0);
+  transform: translateY(-2px);
   box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 2px 4px rgba(0,0,0,0.2);
 }
 .btn:disabled {
@@ -231,27 +238,27 @@ html, body {
   left: 50%; top: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
-  width: clamp(46px, 9vmin, 72px);
-  height: clamp(60px, 11.5vmin, 90px);
+  width: clamp(52px, 10vmin, 80px);
+  height: clamp(76px, 14.5vmin, 116px);
   pointer-events: none;
 }
 .deck-stack {
   position: absolute;
-  width: clamp(46px, 9vmin, 72px);
-  height: clamp(60px, 11.5vmin, 90px);
+  width: clamp(52px, 10vmin, 80px);
+  height: clamp(76px, 14.5vmin, 116px);
 }
 .deck-card {
   position: absolute;
-  width: clamp(40px, 8vmin, 64px);
-  height: clamp(54px, 10.5vmin, 84px);
+  width: clamp(44px, 8.5vmin, 68px);
+  height: clamp(66px, 12.8vmin, 102px);
   border-radius: clamp(3px, 0.8vmin, 6px);
   background-size: cover;
   background-position: center;
   box-shadow: 0 3px 8px rgba(0,0,0,0.5);
 }
-.deck-card:nth-child(1) { top: 0; left: clamp(2px, 0.6vmin, 4px); }
-.deck-card:nth-child(2) { top: clamp(2px, 0.5vmin, 4px); left: clamp(2px, 0.6vmin, 4px); }
-.deck-card:nth-child(3) { top: clamp(3px, 0.8vmin, 6px); left: clamp(2px, 0.6vmin, 4px); }
+.deck-card:nth-child(1) { top: 0; left: clamp(3px, 0.8vmin, 5px); }
+.deck-card:nth-child(2) { top: clamp(3px, 0.6vmin, 5px); left: clamp(3px, 0.8vmin, 5px); }
+.deck-card:nth-child(3) { top: clamp(6px, 1.2vmin, 9px); left: clamp(3px, 0.8vmin, 5px); }
 .deck-count {
   position: absolute;
   top: 50%;
