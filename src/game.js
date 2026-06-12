@@ -1,8 +1,7 @@
 import { loadScores, saveScores, clearScores } from './storage.js';
 import {
   playTakeCard, playOver,
-  playHit, playStand, playBust, playPlayerJoin, playPlayerLeave,
-  playDealerStand
+  playHit, playStand, playBust, playPlayerJoin, playPlayerLeave
 } from './audio.js';
 
 const SUITS = ['spade', 'heart', 'diamond', 'club'];
@@ -374,9 +373,7 @@ export function hit(pid) {
 export function stand(pid) {
   if (gameState !== 'playerTurn' && gameState !== 'dealerTurn') return;
   players[pid].stood = true;
-  if (pid === 'jia') {
-    playDealerStand();
-  } else {
+  if (pid !== 'jia') {
     playStand();
   }
   document.getElementById('ops-' + pid).innerHTML = '';

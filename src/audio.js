@@ -5,7 +5,6 @@ import standUrl from './assets/sounds/stand.ogg';
 import bustUrl from './assets/sounds/bust.ogg';
 import playerJoinUrl from './assets/sounds/player_join.ogg';
 import playerLeaveUrl from './assets/sounds/player_leave.ogg';
-import dealerStandUrl from './assets/sounds/dealer_stand.ogg';
 
 const audioCtx = {
   takeCard: new Audio(takeCardUrl),
@@ -15,7 +14,6 @@ const audioCtx = {
   bust: new Audio(bustUrl),
   playerJoin: new Audio(playerJoinUrl),
   playerLeave: new Audio(playerLeaveUrl),
-  dealerStand: new Audio(dealerStandUrl),
 };
 
 // 预加载，避免第一次播放延迟
@@ -56,8 +54,4 @@ export function playPlayerJoin() {
 
 export function playPlayerLeave() {
   play('playerLeave', 0.8);
-}
-
-export function playDealerStand() {
-  play('dealerStand', 0.8);
 }
