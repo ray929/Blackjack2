@@ -3,6 +3,7 @@ export function preloadAssets(onProgress) {
   const ranks = ['a', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'];
   const urls = [];
 
+  urls.push('./assets/felt_bg.png');
   suits.forEach(suit => {
     ranks.forEach(rank => {
       urls.push(`cards/${suit}_${rank}.webp`);
@@ -10,7 +11,6 @@ export function preloadAssets(onProgress) {
   });
   urls.unshift('cards/card_back.webp');
   urls.push('cards/joker_red.webp', 'cards/joker_black.webp');
-  urls.push('./assets/felt_bg.png');
 
   let loaded = 0;
   const total = urls.length;
