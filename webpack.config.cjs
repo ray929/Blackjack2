@@ -20,10 +20,7 @@ module.exports = {
           from: path.resolve(__dirname, 'src/assets/favicon.svg'),
           to: path.resolve(__dirname, 'dist/favicon.svg'),
         },
-        {
-          from: path.resolve(__dirname, 'src/assets/felt_bg.png'),
-          to: path.resolve(__dirname, 'dist/assets/felt_bg.png'),
-        },
+
         {
           from: path.resolve(__dirname, 'src/assets/cards'),
           to: path.resolve(__dirname, 'dist/cards'),
@@ -39,7 +36,22 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
+        test: /card_back\.webp$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'cards/[name][ext]',
+        },
+      },
+      {
+        test: /felt_bg\.png$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/[name][ext]',
+        },
+      },
+      {
         test: /\.(png|jpg|jpeg|gif|webp|svg)$/i,
+        exclude: [/card_back\.webp$/, /felt_bg\.png$/],
         type: 'asset/resource',
         generator: {
           filename: 'images/[name].[contenthash:8][ext]',
