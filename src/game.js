@@ -1,8 +1,8 @@
 import { loadScores, saveScores, clearScores } from './storage.js';
 import {
   playTakeCard, playOver,
-  playPlayerHit, playPlayerStand, playPlayerBust, playPlayerJoin, playPlayerLeave,
-  playDealerHit, playDealerStand, playDealerBust
+  playHit, playStand, playBust, playPlayerJoin, playPlayerLeave,
+  playDealerStand
 } from './audio.js';
 
 const SUITS = ['spade', 'heart', 'diamond', 'club'];
@@ -131,7 +131,7 @@ export function renderPlayer(pid) {
   const ops = document.getElementById('ops-' + pid);
   const cardsArea = document.getElementById('cards-' + pid);
   const scoreEl = document.getElementById('score-' + pid);
-  const handValueEl = document.getElementById('hand-value-' + pid);
+  let handValueEl = document.getElementById('hand-value-' + pid);
 
   scoreEl.textContent = p.score;
 
@@ -159,19 +159,22 @@ export function renderPlayer(pid) {
       const bgUrl = getCardBgUrl(c.suit, c.rank);
       return `<div class="card" id="card-${pid}-${i}" style="background-image:url('${bgUrl}')"></div>`;
     }).join('');
-    if (handValueEl) {
-      const showValue = (gameState === 'playerTurn' && !p.isDealer) ||
-                        gameState === 'dealerTurn' ||
-                        gameState === 'settling' ||
-                        (gameState === 'idle' && p.cards.length > 0);
-      if (showValue) {
-        handValueEl.textContent = handValue(p.cards);
-        handValueEl.classList.add('show');
-      } else {
-        handValueEl.classList.remove('show');
-      }
-      cardsArea.appendChild(handValueEl);
+    if (!handValueEl) {
+      handValueEl = document.createElement('div');
+      handValueEl.id = 'hand-value-' + pid;
+      handValueEl.className = 'hand-value';
     }
+    const showValue = (gameState === 'playerTurn' && !p.isDealer) ||
+                      gameState === 'dealerTurn' ||
+                      gameState === 'settling' ||
+                      (gameState === 'idle' && p.cards.length > 0);
+    if (showValue) {
+      handValueEl.textContent = handValue(p.cards);
+      handValueEl.classList.add('show');
+    } else {
+      handValueEl.classList.remove('show');
+    }
+    cardsArea.appendChild(handValueEl);
   }
 
   if (gameState === 'idle') {
@@ -179,6 +182,12 @@ export function renderPlayer(pid) {
       checkDealButton();
     } else {
       ops.innerHTML = `<button class="btn secondary" data-action="leave" data-pid="${pid}">离座</button>`;
+    }
+  } else {
+    const isCurrentTurn = (gameState === 'playerTurn' && playerOrder[currentPlayerIndex] === pid) ||
+                          (gameState === 'dealerTurn' && pid === 'jia');
+    if (!isCurrentTurn) {
+      ops.innerHTML = '';
     }
   }
 }
@@ -308,57 +317,53 @@ function advancePlayerTurn() {
 export function hit(pid) {
   if (gameState !== 'playerTurn' && gameState !== 'dealerTurn') return;
   if (deck.length === 0) return;
-  const card = deck.pop();
-  card.faceDown = false;
-  players[pid].cards.push(card);
-  updateDeckCount();
+  document.getElementById('ops-' + pid).innerHTML = '';
+  playHit();
 
-  const from = getDeckCenter();
-  const to = getCardTarget(pid);
-  playTakeCard();
-  if (pid === 'jia') {
-    playDealerHit();
-  } else {
-    playPlayerHit();
-  }
-  flyCard(from, to, () => {
-    renderPlayer(pid);
-    const p = players[pid];
-    const val = handValue(p.cards);
-    if (val > 21) {
-      p.busted = true;
-      setHint(pid, '爆牌!', 'bust');
-      if (pid === 'jia') {
-        playDealerBust();
-      } else {
-        playPlayerBust();
-      }
-      document.getElementById('ops-' + pid).innerHTML = '';
-      if (gameState === 'playerTurn') {
-        currentPlayerIndex++;
-        setTimeout(() => advancePlayerTurn(), 400);
-      } else if (gameState === 'dealerTurn') {
-        setTimeout(() => settle(), 400);
-      }
-      return;
-    }
+  setTimeout(() => {
+    const card = deck.pop();
+    card.faceDown = false;
+    players[pid].cards.push(card);
+    updateDeckCount();
 
-    // 五子不犯廿 / 强制停牌（仅闲家）
-    if (!p.isDealer && p.cards.length === 5) {
-      document.getElementById('ops-' + pid).innerHTML = '';
-      if (val <= 19) {
-        p.fiveCardWin = true;
-        setHint(pid, '五子不犯廿! +50', 'win');
-      } else {
-        p.stood = true; // 20或21强制停牌
+    const from = getDeckCenter();
+    const to = getCardTarget(pid);
+    playTakeCard();
+    flyCard(from, to, () => {
+      renderPlayer(pid);
+      const p = players[pid];
+      const val = handValue(p.cards);
+      if (val > 21) {
+        p.busted = true;
+        setHint(pid, '爆牌!', 'bust');
+        playBust();
+        document.getElementById('ops-' + pid).innerHTML = '';
+        if (gameState === 'playerTurn') {
+          currentPlayerIndex++;
+          setTimeout(() => advancePlayerTurn(), 400);
+        } else if (gameState === 'dealerTurn') {
+          setTimeout(() => settle(), 400);
+        }
+        return;
       }
-      if (gameState === 'playerTurn') {
-        currentPlayerIndex++;
-        setTimeout(() => advancePlayerTurn(), 400);
+
+      // 五子不犯廿 / 强制停牌（仅闲家）
+      if (!p.isDealer && p.cards.length === 5) {
+        document.getElementById('ops-' + pid).innerHTML = '';
+        if (val <= 19) {
+          p.fiveCardWin = true;
+          setHint(pid, '五子不犯廿! +50', 'win');
+        } else {
+          p.stood = true; // 20或21强制停牌
+        }
+        if (gameState === 'playerTurn') {
+          currentPlayerIndex++;
+          setTimeout(() => advancePlayerTurn(), 400);
+        }
+        return;
       }
-      return;
-    }
-  });
+    });
+  }, 500);
 }
 
 export function stand(pid) {
@@ -367,7 +372,7 @@ export function stand(pid) {
   if (pid === 'jia') {
     playDealerStand();
   } else {
-    playPlayerStand();
+    playStand();
   }
   document.getElementById('ops-' + pid).innerHTML = '';
   if (gameState === 'playerTurn') {

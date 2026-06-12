@@ -1,25 +1,21 @@
 import takeCardUrl from './assets/sounds/take_card.mp3';
 import overUrl from './assets/sounds/over.mp3';
-import playerHitUrl from './assets/sounds/player_hit.ogg';
-import playerStandUrl from './assets/sounds/player_stand.ogg';
-import playerBustUrl from './assets/sounds/player_bust.ogg';
+import hitUrl from './assets/sounds/hit.ogg';
+import standUrl from './assets/sounds/player_stand.ogg';
+import bustUrl from './assets/sounds/bust.ogg';
 import playerJoinUrl from './assets/sounds/player_join.ogg';
 import playerLeaveUrl from './assets/sounds/player_leave.ogg';
-import dealerHitUrl from './assets/sounds/dealer_hit.ogg';
 import dealerStandUrl from './assets/sounds/dealer_stand.ogg';
-import dealerBustUrl from './assets/sounds/dealer_bust.ogg';
 
 const audioCtx = {
   takeCard: new Audio(takeCardUrl),
   over: new Audio(overUrl),
-  playerHit: new Audio(playerHitUrl),
-  playerStand: new Audio(playerStandUrl),
-  playerBust: new Audio(playerBustUrl),
+  hit: new Audio(hitUrl),
+  stand: new Audio(standUrl),
+  bust: new Audio(bustUrl),
   playerJoin: new Audio(playerJoinUrl),
   playerLeave: new Audio(playerLeaveUrl),
-  dealerHit: new Audio(dealerHitUrl),
   dealerStand: new Audio(dealerStandUrl),
-  dealerBust: new Audio(dealerBustUrl),
 };
 
 // 预加载，避免第一次播放延迟
@@ -42,16 +38,16 @@ export function playOver() {
   play('over', 0.8);
 }
 
-export function playPlayerHit() {
-  play('playerHit', 0.8);
+export function playHit() {
+  play('hit', 0.8);
 }
 
-export function playPlayerStand() {
-  play('playerStand', 0.8);
+export function playStand() {
+  play('stand', 0.8);
 }
 
-export function playPlayerBust() {
-  play('playerBust', 0.9);
+export function playBust() {
+  play('bust', 0.9);
 }
 
 export function playPlayerJoin() {
@@ -62,14 +58,6 @@ export function playPlayerLeave() {
   play('playerLeave', 0.8);
 }
 
-export function playDealerHit() {
-  play('dealerHit', 0.8);
-}
-
 export function playDealerStand() {
   play('dealerStand', 0.8);
-}
-
-export function playDealerBust() {
-  play('dealerBust', 0.9);
 }
