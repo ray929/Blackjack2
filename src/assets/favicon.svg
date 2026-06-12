@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+  </defs>
+  <!-- 背景圆角方块 -->
+  <rect width="64" height="64" rx="8" ry="8" fill="url(#bg)"/>
+  <rect x="2" y="2" width="60" height="60" rx="6" ry="6" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+
+  <!-- 黑桃符号：缩小30%，放置在左上角 -->
+  <g transform="translate(-10, -3) scale(0.84)">
+    <path d="M32 10 C32 10 20 26 20 34 C20 40 25 44 30 42 L28 46 L36 46 L34 42 C39 44 44 40 44 34 C44 26 32 10 32 10Z"
+          fill="#c9a84c"/>
+  </g>
+
+  <!-- A 字母：增加50%，放置在右下角 -->
+  <text x="58" y="58" text-anchor="end" font-family="serif" font-size="42" font-weight="bold" fill="#c9a84c">A</text>
+</svg>

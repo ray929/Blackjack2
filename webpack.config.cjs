@@ -17,8 +17,13 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
+          from: path.resolve(__dirname, 'src/assets/favicon.svg'),
+          to: path.resolve(__dirname, 'dist/favicon.svg'),
+        },
+        {
           from: path.resolve(__dirname, 'src/assets/cards'),
           to: path.resolve(__dirname, 'dist/cards'),
+          globOptions: { ignore: ['**/card_back.webp'] },
         },
       ],
     }),
@@ -33,14 +38,14 @@ module.exports = {
         test: /\.(png|jpg|jpeg|gif|webp|svg)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'images/[name][ext]',
+          filename: 'images/[name].[contenthash:8][ext]',
         },
       },
       {
         test: /\.(mp3|wav|ogg)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'sounds/[name][ext]',
+          filename: 'sounds/[name].[contenthash:8][ext]',
         },
       },
     ],

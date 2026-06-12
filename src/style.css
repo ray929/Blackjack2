@@ -111,7 +111,6 @@ html, body {
 .card {
   width: clamp(44px, 9vmin, 72px);
   height: clamp(66px, 13.5vmin, 108px);
-  background: #fff;
   border-radius: clamp(4px, 1vmin, 7px);
   display: flex; align-items: center; justify-content: center;
   font-size: clamp(14px, 3vmin, 24px); font-weight: bold;
@@ -140,8 +139,11 @@ html, body {
 .hand-value {
   position: absolute;
   top: clamp(2px, 0.5vmin, 6px);
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  text-align: center;
+  width: max-content;
   font-size: clamp(12px, 2.2vmin, 18px);
   font-weight: bold;
   color: #ffd700;
@@ -154,11 +156,11 @@ html, body {
   display: block;
 }
 
-/* 旋转区域（乙、丙）的 hand-value 改用 bottom 定位，避免旋转后跑到下方 */
+/* 乙、丙区域旋转180度，但从各自视角看，CSS top 在视觉底部=他们的"上方"
+   所以沿用默认的 top 定位，四个玩家显示效果一致 */
 #yi .hand-value,
 #bing .hand-value {
-  top: auto;
-  bottom: clamp(2px, 0.5vmin, 6px);
+  top: clamp(2px, 0.5vmin, 6px);
 }
 
 /* 底部 30%：名字 + 操作区域 */
@@ -196,8 +198,8 @@ html, body {
   font-size: clamp(12px, 2vmin, 16px); font-weight: bold;
   cursor: pointer;
   min-width: clamp(56px, 12vmin, 84px); text-align: center;
-  transition: all 0.15s ease;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.25);
+  transition: filter 0.15s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.25);
   text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 .btn.primary {
@@ -207,25 +209,21 @@ html, body {
 }
 .btn.secondary {
   background: linear-gradient(180deg, #ff8585 0%, #e05050 100%);
-  color: #fff;
+  color: #3a1a00;
 }
 .btn.danger {
   background: linear-gradient(180deg, #ff8585 0%, #e05050 100%);
-  color: #fff;
+  color: #3a1a00;
 }
 .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3);
+  filter: brightness(1.1);
 }
 .btn:active {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 2px 4px rgba(0,0,0,0.2);
+  filter: brightness(0.85);
 }
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  transform: none;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 /* 旋转：乙丙180度 */
