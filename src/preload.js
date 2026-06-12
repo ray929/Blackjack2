@@ -8,6 +8,7 @@ export function preloadAssets(onProgress) {
       urls.push(`cards/${suit}_${rank}.webp`);
     });
   });
+  urls.unshift('cards/card_back.webp');
   urls.push('cards/joker_red.webp', 'cards/joker_black.webp');
   urls.push('./assets/felt_bg.png');
 
