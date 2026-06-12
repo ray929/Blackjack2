@@ -318,7 +318,8 @@ function advancePlayerTurn() {
 export function hit(pid) {
   if (gameState !== 'playerTurn' && gameState !== 'dealerTurn') return;
   if (deck.length === 0) return;
-  document.getElementById('ops-' + pid).innerHTML = '';
+  const ops = document.getElementById('ops-' + pid);
+  ops.querySelectorAll('button').forEach(btn => btn.disabled = true);
   playHit();
 
   setTimeout(() => {
@@ -338,7 +339,7 @@ export function hit(pid) {
         p.busted = true;
         setHint(pid, '爆牌!', 'bust');
         playBust();
-        document.getElementById('ops-' + pid).innerHTML = '';
+        ops.innerHTML = '';
         if (gameState === 'playerTurn') {
           currentPlayerIndex++;
           setTimeout(() => advancePlayerTurn(), 400);
@@ -350,7 +351,7 @@ export function hit(pid) {
 
       // 五子不犯廿 / 强制停牌（仅闲家）
       if (!p.isDealer && p.cards.length === 5) {
-        document.getElementById('ops-' + pid).innerHTML = '';
+        ops.innerHTML = '';
         if (val <= 19) {
           p.fiveCardWin = true;
           setHint(pid, '五子不犯廿! +50', 'win');
@@ -364,9 +365,8 @@ export function hit(pid) {
         return;
       }
 
-      // 回合未结束，重新显示按钮
-      const ops = document.getElementById('ops-' + pid);
-      ops.innerHTML = `<button class="btn primary" data-action="hit" data-pid="${pid}">要牌</button><button class="btn secondary" data-action="stand" data-pid="${pid}">停牌</button>`;
+      // 回合未结束，恢复按钮可用
+      ops.querySelectorAll('button').forEach(btn => btn.disabled = false);
     });
   }, 500);
 }
