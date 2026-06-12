@@ -103,14 +103,13 @@ html, body {
   gap: clamp(3px, 1vmin, 8px);
   align-items: center;
   justify-content: center;
-  padding: clamp(18px, 3.5vmin, 26px) clamp(6px, 1.5vmin, 14px) 0;
+  padding: clamp(6px, 1.2vmin, 10px) clamp(6px, 1.5vmin, 14px) clamp(12px, 2.4vmin, 18px);
   flex-shrink: 0;
-  overflow: hidden;
   position: relative;
 }
 .card {
-  width: clamp(44px, 9vmin, 72px);
-  height: clamp(66px, 13.5vmin, 108px);
+  width: clamp(53px, 10.8vmin, 86px);
+  height: clamp(79px, 16.2vmin, 130px);
   border-radius: clamp(4px, 1vmin, 7px);
   display: flex; align-items: center; justify-content: center;
   font-size: clamp(14px, 3vmin, 24px); font-weight: bold;
@@ -138,13 +137,13 @@ html, body {
 
 .hand-value {
   position: absolute;
-  top: clamp(2px, 0.5vmin, 6px);
+  top: clamp(-24px, -4.8vmin, -18px);
   left: 0;
   right: 0;
   margin: 0 auto;
   text-align: center;
   width: max-content;
-  font-size: clamp(12px, 2.2vmin, 18px);
+  font-size: clamp(14px, 2.6vmin, 22px);
   font-weight: bold;
   color: #ffd700;
   text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.8);
@@ -160,7 +159,7 @@ html, body {
    所以沿用默认的 top 定位，四个玩家显示效果一致 */
 #yi .hand-value,
 #bing .hand-value {
-  top: clamp(2px, 0.5vmin, 6px);
+  top: clamp(-24px, -4.8vmin, -18px);
 }
 
 /* 底部 30%：名字 + 操作区域 */
@@ -193,11 +192,11 @@ html, body {
   justify-content: center;
 }
 .btn {
-  padding: clamp(5px, 1.2vmin, 10px) clamp(12px, 3vmin, 22px);
+  padding: clamp(6px, 1.44vmin, 12px) clamp(14px, 3.6vmin, 26px);
   border: none; border-radius: clamp(6px, 1.5vmin, 10px);
-  font-size: clamp(12px, 2vmin, 16px); font-weight: bold;
+  font-size: clamp(14px, 2.4vmin, 19px); font-weight: bold;
   cursor: pointer;
-  min-width: clamp(56px, 12vmin, 84px); text-align: center;
+  min-width: clamp(67px, 14.4vmin, 101px); text-align: center;
   transition: filter 0.15s ease;
   box-shadow: 0 3px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.25);
   text-shadow: 0 1px 2px rgba(0,0,0,0.3);
@@ -236,19 +235,19 @@ html, body {
   left: 50%; top: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
-  width: clamp(52px, 10vmin, 80px);
-  height: clamp(76px, 14.5vmin, 116px);
+  width: clamp(62px, 12vmin, 96px);
+  height: clamp(91px, 17.4vmin, 139px);
   pointer-events: none;
 }
 .deck-stack {
   position: absolute;
-  width: clamp(52px, 10vmin, 80px);
-  height: clamp(76px, 14.5vmin, 116px);
+  width: clamp(62px, 12vmin, 96px);
+  height: clamp(91px, 17.4vmin, 139px);
 }
 .deck-card {
   position: absolute;
-  width: clamp(44px, 8.5vmin, 68px);
-  height: clamp(66px, 12.8vmin, 102px);
+  width: clamp(53px, 10.2vmin, 82px);
+  height: clamp(79px, 15.4vmin, 122px);
   border-radius: clamp(3px, 0.8vmin, 6px);
   background-size: cover;
   background-position: center;
@@ -273,8 +272,8 @@ html, body {
 /* 飞牌动画 */
 .flying-card {
   position: fixed;
-  width: clamp(44px, 9vmin, 72px);
-  height: clamp(66px, 13.5vmin, 108px);
+  width: clamp(53px, 10.8vmin, 86px);
+  height: clamp(79px, 16.2vmin, 130px);
   border-radius: clamp(4px, 1vmin, 7px);
   background-size: cover;
   background-position: center;
