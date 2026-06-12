@@ -125,15 +125,18 @@ export function renderPlayer(pid) {
   const ops = document.getElementById('ops-' + pid);
   const cardsArea = document.getElementById('cards-' + pid);
   const scoreEl = document.getElementById('score-' + pid);
+  const handValueEl = document.getElementById('hand-value-' + pid);
 
   scoreEl.textContent = p.score;
 
   if (!p.seated) {
     if (gameState === 'idle') {
       cardsArea.innerHTML = '';
+      if (handValueEl) handValueEl.classList.remove('show');
       ops.innerHTML = `<button class="btn primary" data-action="seat" data-pid="${pid}">落座</button>`;
     } else {
       cardsArea.innerHTML = '<div class="waiting-text">请稍候</div>';
+      if (handValueEl) handValueEl.classList.remove('show');
       ops.innerHTML = `<button class="btn primary" disabled data-action="seat" data-pid="${pid}">落座</button>`;
     }
     return;
@@ -141,6 +144,7 @@ export function renderPlayer(pid) {
 
   if (p.cards.length === 0) {
     cardsArea.innerHTML = '';
+    if (handValueEl) handValueEl.classList.remove('show');
   } else {
     cardsArea.innerHTML = p.cards.map((c, i) => {
       if (c.faceDown) {
@@ -149,6 +153,19 @@ export function renderPlayer(pid) {
       const bgUrl = getCardBgUrl(c.suit, c.rank);
       return `<div class="card" id="card-${pid}-${i}" style="background-image:url('${bgUrl}')"></div>`;
     }).join('');
+    if (handValueEl) {
+      const showValue = (gameState === 'playerTurn' && !p.isDealer) ||
+                        gameState === 'dealerTurn' ||
+                        gameState === 'settling' ||
+                        (gameState === 'idle' && p.cards.length > 0);
+      if (showValue) {
+        handValueEl.textContent = handValue(p.cards);
+        handValueEl.classList.add('show');
+      } else {
+        handValueEl.classList.remove('show');
+      }
+      cardsArea.appendChild(handValueEl);
+    }
   }
 
   if (gameState === 'idle') {
@@ -191,8 +208,8 @@ function flyCard(from, to, onDone) {
   });
 
   setTimeout(() => {
-    card.remove();
     if (onDone) onDone();
+    card.remove();
   }, 550);
 }
 
@@ -243,6 +260,7 @@ export function deal() {
 
 function startPlayerTurn() {
   gameState = 'playerTurn';
+  renderAll();
   currentPlayerIndex = 1; // 从乙开始，庄家最后
   for (const pid of playerOrder) {
     if (isBlackjack(players[pid].cards)) {
@@ -361,8 +379,8 @@ function startDealerTurn() {
   const dealer = players.jia;
   if (dealer.cards.length >= 2 && dealer.cards[1].faceDown) {
     dealer.cards[1].faceDown = false;
-    renderPlayer('jia');
   }
+  renderAll();
   if (dealer.blackjack) {
     setHint('jia', 'Blackjack!', 'blackjack');
   }
@@ -436,9 +454,9 @@ function settle() {
   }
 
   persistScores();
+  gameState = 'idle';
   renderAll();
   playOver();
-  gameState = 'idle';
   checkDealButton();
 }
 

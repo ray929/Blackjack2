@@ -136,6 +136,23 @@ html, body {
   letter-spacing: 2px;
 }
 
+.hand-value {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.8);
+  z-index: 5;
+  display: none;
+  pointer-events: none;
+}
+.hand-value.show {
+  display: block;
+}
+
 /* 底部 30%：名字 + 操作区域 */
 .bottom-area {
   height: 30%;
