@@ -5,8 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <title>21点 - 四人同屏</title>
+<style>
+  #loading-screen {
+    position: fixed; left: 0; top: 0; width: 100vw; height: 100vh;
+    background: #072e14; z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .loading #game-root,
+  .loading #confirm-overlay { display: none !important; }
+</style>
 </head>
-<body>
+<body class="loading">
 <div id="loading-screen">
   <div class="loading-box">
     <div class="loading-title">21点</div>

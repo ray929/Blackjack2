@@ -12,6 +12,7 @@ preloadAssets((loaded, total) => {
   if (progressBar) progressBar.style.width = pct + '%';
   if (progressText) progressText.textContent = `正在加载资源... ${pct}%`;
 }).then(() => {
+  document.body.classList.remove('loading');
   if (loadingScreen) loadingScreen.style.display = 'none';
   if (gameRoot) gameRoot.style.display = 'block';
 });
