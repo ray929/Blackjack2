@@ -1,4 +1,4 @@
-import takeCardUrl from './assets/sounds/take_card.mp3';
+import takeCardUrl from './assets/sounds/take_card.ogg';
 import overUrl from './assets/sounds/over.mp3';
 import hitUrl from './assets/sounds/hit.ogg';
 import standUrl from './assets/sounds/stand.ogg';
