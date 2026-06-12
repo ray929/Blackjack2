@@ -16,5 +16,5 @@ export function preloadAssets() {
   });
 
   const bg = new Image();
-  bg.src = 'felt_bg.png';
+  bg.src = './assets/felt_bg.png';
 }

@@ -21,6 +21,10 @@ module.exports = {
           to: path.resolve(__dirname, 'dist/favicon.svg'),
         },
         {
+          from: path.resolve(__dirname, 'src/assets/felt_bg.png'),
+          to: path.resolve(__dirname, 'dist/assets/felt_bg.png'),
+        },
+        {
           from: path.resolve(__dirname, 'src/assets/cards'),
           to: path.resolve(__dirname, 'dist/cards'),
           globOptions: { ignore: ['**/card_back.webp'] },
