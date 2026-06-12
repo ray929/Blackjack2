@@ -1,4 +1,4 @@
-export function preloadAssets() {
+export function preloadAssets(onProgress) {
   const suits = ['spade', 'heart', 'diamond', 'club'];
   const ranks = ['a', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'j', 'q', 'k'];
   const urls = [];
@@ -9,12 +9,30 @@ export function preloadAssets() {
     });
   });
   urls.push('cards/joker_red.webp', 'cards/joker_black.webp');
+  urls.push('./assets/felt_bg.png');
 
-  urls.forEach(src => {
-    const img = new Image();
-    img.src = src;
+  let loaded = 0;
+  const total = urls.length;
+
+  function updateProgress() {
+    loaded++;
+    if (onProgress) onProgress(loaded, total);
+  }
+
+  const promises = urls.map(src => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        updateProgress();
+        resolve();
+      };
+      img.onerror = () => {
+        updateProgress();
+        resolve();
+      };
+      img.src = src;
+    });
   });
 
-  const bg = new Image();
-  bg.src = './assets/felt_bg.png';
+  return Promise.all(promises);
 }

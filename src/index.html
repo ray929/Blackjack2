@@ -7,7 +7,16 @@
 <title>21点 - 四人同屏</title>
 </head>
 <body>
-<div id="game-root">
+<div id="loading-screen">
+  <div class="loading-box">
+    <div class="loading-title">21点</div>
+    <div class="loading-bar-wrap">
+      <div class="loading-bar" id="loading-bar"></div>
+    </div>
+    <div class="loading-text" id="loading-text">正在加载资源... 0%</div>
+  </div>
+</div>
+<div id="game-root" style="display:none;">
   <div id="game-board" class="felt-bg">
     <div class="region region-yi" id="yi" data-player="yi">
       <span class="score" id="score-yi">0</span>
