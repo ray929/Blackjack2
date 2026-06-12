@@ -182,7 +182,7 @@ export function renderPlayer(pid) {
       ops.innerHTML = `<button class="btn secondary" data-action="leave" data-pid="${pid}">离座</button>`;
     }
   } else if (gameState === 'dealing') {
-    ops.innerHTML = `<button class="btn primary" disabled>要牌</button><button class="btn secondary" disabled>停牌</button>`;
+    ops.innerHTML = '';
   } else {
     const isCurrentTurn = (gameState === 'playerTurn' && playerOrder[currentPlayerIndex] === pid) ||
                           (gameState === 'dealerTurn' && pid === 'jia');
