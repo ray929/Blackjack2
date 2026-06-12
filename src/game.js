@@ -126,6 +126,12 @@ function getCardBgUrl(suit, rank) {
   return `cards/${suit}_${rank}.webp`;
 }
 
+function visibleHandValue(cards) {
+  const visible = cards.filter(c => !c.faceDown);
+  if (visible.length === 0) return '';
+  return handValue(visible);
+}
+
 export function renderPlayer(pid) {
   const p = players[pid];
   const ops = document.getElementById('ops-' + pid);
@@ -164,16 +170,9 @@ export function renderPlayer(pid) {
       handValueEl.id = 'hand-value-' + pid;
       handValueEl.className = 'hand-value';
     }
-    const showValue = (gameState === 'playerTurn' && !p.isDealer) ||
-                      gameState === 'dealerTurn' ||
-                      gameState === 'settling' ||
-                      (gameState === 'idle' && p.cards.length > 0);
-    if (showValue) {
-      handValueEl.textContent = handValue(p.cards);
-      handValueEl.classList.add('show');
-    } else {
-      handValueEl.classList.remove('show');
-    }
+    const v = visibleHandValue(p.cards);
+    handValueEl.textContent = v;
+    handValueEl.classList.toggle('show', v !== '');
     cardsArea.appendChild(handValueEl);
   }
 
@@ -183,6 +182,8 @@ export function renderPlayer(pid) {
     } else {
       ops.innerHTML = `<button class="btn secondary" data-action="leave" data-pid="${pid}">离座</button>`;
     }
+  } else if (gameState === 'dealing') {
+    ops.innerHTML = `<button class="btn primary" disabled>要牌</button><button class="btn secondary" disabled>停牌</button>`;
   } else {
     const isCurrentTurn = (gameState === 'playerTurn' && playerOrder[currentPlayerIndex] === pid) ||
                           (gameState === 'dealerTurn' && pid === 'jia');
@@ -362,6 +363,10 @@ export function hit(pid) {
         }
         return;
       }
+
+      // 回合未结束，重新显示按钮
+      const ops = document.getElementById('ops-' + pid);
+      ops.innerHTML = `<button class="btn primary" data-action="hit" data-pid="${pid}">要牌</button><button class="btn secondary" data-action="stand" data-pid="${pid}">停牌</button>`;
     });
   }, 500);
 }
